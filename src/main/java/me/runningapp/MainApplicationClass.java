@@ -1,4 +1,4 @@
-package me.salisuwy;
+package me.runningapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
