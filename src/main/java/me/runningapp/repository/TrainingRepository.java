@@ -1,9 +1,14 @@
 package me.runningapp.repository;
 
-import me.runningapp.model.Role;
 import me.runningapp.model.Training;
-import org.springframework.data.jpa.repository.JpaRepository;
+import me.runningapp.model.User;
 
-public interface TrainingRepository extends JpaRepository<Training, Long> {
+import java.util.List;
+
+public interface TrainingRepository {
+    public List<Training> listTrainings();
+    public List<Training> listTrainingsByUser(User user);
+
+    public Training getTraining(int id);
 }
 

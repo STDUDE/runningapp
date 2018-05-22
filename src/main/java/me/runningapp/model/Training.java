@@ -10,7 +10,7 @@ public class Training {
     private Long id;
     private Date start;
     private double distance;
-//    private User user;
+    private User user;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,13 +22,13 @@ public class Training {
         this.id = id;
     }
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

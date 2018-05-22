@@ -10,7 +10,7 @@ public class User {
     private String username;
     private String password;
     private String passwordConfirm;
-//    private Set<Training> trainings;
+    private Set<Training> trainings;
     private Set<Role> roles;
 
     @Id
@@ -48,14 +48,14 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-//    public Set<Training> getTrainings() {
-//        return trainings;
-//    }
-//
-//    public void setTrainings(Set<Training> trainings) {
-//        this.trainings = trainings;
-//    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    public Set<Training> getTrainings() {
+        return trainings;
+    }
+
+    public void setTrainings(Set<Training> trainings) {
+        this.trainings = trainings;
+    }
 
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
