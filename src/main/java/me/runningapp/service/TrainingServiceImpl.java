@@ -3,7 +3,6 @@ package me.runningapp.service;
 import me.runningapp.model.Training;
 import me.runningapp.model.User;
 import me.runningapp.repository.TrainingRepository;
-import me.runningapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,12 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Transactional
-    public Training getTraining(int id) {
-        return trainingRepository.getTraining(id);
+    public Training get(long id) {
+        return trainingRepository.get(id);
+    }
+
+    @Override
+    public void save(Training training) {
+        trainingRepository.save(training);
     }
 }

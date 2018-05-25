@@ -33,8 +33,15 @@ public class TrainingRepositoryImpl implements TrainingRepository {
     }
 
     @Override
-    public Training getTraining(int id) {
+    public Training get(long id) {
         Query query = sessionFactory.getCurrentSession().createQuery("from Training where id=" + id);
         return (Training) query.uniqueResult();
     }
+
+    @Override
+    public void save(Training training) {
+        sessionFactory.getCurrentSession().save(training);
+    }
+
+
 }

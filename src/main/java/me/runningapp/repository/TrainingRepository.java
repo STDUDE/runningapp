@@ -9,6 +9,8 @@ public interface TrainingRepository {
     public List<Training> listTrainings();
     public List<Training> listTrainingsByUser(User user);
 
-    public Training getTraining(int id);
+    public Training get(long id);
+
+    void save(Training training);
 }
 
