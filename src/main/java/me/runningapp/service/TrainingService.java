@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public interface TrainingService {
-    public List<Training> listTrainings();
-//    public List<Training> listTrainingsByUser(User user);
-
-    public Training get(long id);
+    List<Training> getAll();
+    List<Training> getAllByUser(User user);
+    Training get(long id);
     void save(Training training);
+    void update(Training training);
+    void delete(Long id);
 }

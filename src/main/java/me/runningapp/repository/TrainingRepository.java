@@ -6,11 +6,12 @@ import me.runningapp.model.User;
 import java.util.List;
 
 public interface TrainingRepository {
-    public List<Training> listTrainings();
-    public List<Training> listTrainingsByUser(User user);
+    List<Training> getAll();
+    List<Training> getAllByUser(User user);
 
-    public Training get(long id);
-
+    Training get(long id);
     void save(Training training);
+    void update(Training training);
+    void delete(Long id);
 }
 

@@ -2,6 +2,7 @@ package me.runningapp.api;
 
 
 import me.runningapp.model.Training;
+import me.runningapp.model.User;
 import me.runningapp.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
@@ -27,7 +28,7 @@ public class ReportController {
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     List<Training> getAll() {
-        return trainingService.listTrainings();
+        return trainingService.getAll();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,11 +51,9 @@ public class ReportController {
     @RequestMapping(value = "/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    Training get(@RequestParam String name) {
-        return trainingService.get(name);
+    List<Training> get(@RequestBody User user) {
+        return trainingService.getAllByUser(user);
     }
-
-
 
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)

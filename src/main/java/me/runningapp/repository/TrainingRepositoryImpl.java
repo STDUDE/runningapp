@@ -20,12 +20,12 @@ public class TrainingRepositoryImpl implements TrainingRepository {
     private SessionFactory sessionFactory;
 
     @SuppressWarnings("unchecked")
-    public List<Training> listTrainings() {
+    public List<Training> getAll() {
         return sessionFactory.getCurrentSession().createQuery("from Training").list();
     }
 
     @SuppressWarnings("unchecked")
-    public List<Training> listTrainingsByUser(User user) {
+    public List<Training> getAllByUser(User user) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Training.class);
 
         criteria.add(Restrictions.eq("user_id", user.getId()));
@@ -41,6 +41,16 @@ public class TrainingRepositoryImpl implements TrainingRepository {
     @Override
     public void save(Training training) {
         sessionFactory.getCurrentSession().save(training);
+    }
+
+    @Override
+    public void update(Training training) {
+        sessionFactory.getCurrentSession().update(training);
+    }
+
+    @Override
+    public void delete(Long id) {
+        sessionFactory.getCurrentSession().delete(get(id));
     }
 
 

@@ -16,13 +16,13 @@ public class TrainingServiceImpl implements TrainingService {
     private TrainingRepository trainingRepository;
 
     @Transactional
-    public List<Training> listTrainings() {
-        return trainingRepository.listTrainings();
+    public List<Training> getAll() {
+        return trainingRepository.getAll();
     }
 
     @Transactional
-    public List<Training> listTrainingsByUser(User user) {
-        return trainingRepository.listTrainingsByUser(user);
+    public List<Training> getAllByUser(User user) {
+        return trainingRepository.getAllByUser(user);
     }
 
     @Transactional
@@ -34,4 +34,16 @@ public class TrainingServiceImpl implements TrainingService {
     public void save(Training training) {
         trainingRepository.save(training);
     }
+
+    @Override
+    public void update(Training training) {
+        trainingRepository.update(training);
+    }
+
+    @Override
+    public void delete(Long id) {
+        trainingRepository.delete(id);
+    }
+
+
 }
