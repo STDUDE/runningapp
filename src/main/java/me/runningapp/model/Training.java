@@ -1,8 +1,9 @@
 package me.runningapp.model;
 
+import me.runningapp.model.authority.User;
+
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Table(name = "training")

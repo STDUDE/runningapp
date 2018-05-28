@@ -1,7 +1,7 @@
 package me.runningapp.service;
 
-import me.runningapp.model.Role;
-import me.runningapp.model.User;
+import me.runningapp.model.authority.Role;
+import me.runningapp.model.authority.User;
 import me.runningapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,57 +1,71 @@
 package me.runningapp.repository;
 
 import me.runningapp.model.Training;
-import me.runningapp.model.User;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
+import me.runningapp.model.authority.User;
 import org.springframework.stereotype.Repository;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 @Repository
 public class TrainingRepositoryImpl implements TrainingRepository {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
     public List<Training> getAll() {
-        return sessionFactory.getCurrentSession().createQuery("from Training").list();
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Training> query = builder.createQuery(Training.class);
+        Root<Training> root = query.from(Training.class);
+        query.select(root).distinct(true);
+        TypedQuery<Training> allQuery = entityManager.createQuery(query);
+
+//        return entityManager.createQuery("from Training").getResultList();
+        return allQuery.getResultList();
     }
 
     @SuppressWarnings("unchecked")
     public List<Training> getAllByUser(User user) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Training.class);
+//        Criteria criteria = entityManager.getCriteriaBuilder().equal(Restrictions.eq("user_id", user.getId()));
 
-        criteria.add(Restrictions.eq("user_id", user.getId()));
-        return criteria.list();
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Training> getAllByUser(Long id) {
+
+        return null;
     }
 
     @Override
     public Training get(long id) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from Training where id=" + id);
-        return (Training) query.uniqueResult();
+        return (Training) entityManager.createQuery("from Training where id=" + id).getSingleResult();
     }
 
     @Override
     public void save(Training training) {
-        sessionFactory.getCurrentSession().save(training);
+        entityManager.persist(training);
     }
 
     @Override
     public void update(Training training) {
-        sessionFactory.getCurrentSession().update(training);
+        entityManager.merge(training);
     }
 
     @Override
     public void delete(Long id) {
-        sessionFactory.getCurrentSession().delete(get(id));
+        Training training = entityManager.find(Training.class, id);
+        delete(training);
     }
 
+    @Override
+    public void delete(Training training) {
+        entityManager.remove(training);
+    }
 
 }

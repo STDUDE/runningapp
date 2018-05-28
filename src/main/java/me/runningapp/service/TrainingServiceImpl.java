@@ -1,7 +1,7 @@
 package me.runningapp.service;
 
 import me.runningapp.model.Training;
-import me.runningapp.model.User;
+import me.runningapp.model.authority.User;
 import me.runningapp.repository.TrainingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

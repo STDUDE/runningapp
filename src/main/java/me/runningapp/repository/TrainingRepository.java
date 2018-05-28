@@ -1,7 +1,7 @@
 package me.runningapp.repository;
 
 import me.runningapp.model.Training;
-import me.runningapp.model.User;
+import me.runningapp.model.authority.User;
 
 import java.util.List;
 
@@ -13,5 +13,6 @@ public interface TrainingRepository {
     void save(Training training);
     void update(Training training);
     void delete(Long id);
+    void delete(Training training);
 }
 

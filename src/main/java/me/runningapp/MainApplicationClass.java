@@ -13,11 +13,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 public class MainApplicationClass extends SpringBootServletInitializer {
 
-    @Bean
-    public HibernateJpaSessionFactoryBean sessionFactory() {
-        return new HibernateJpaSessionFactoryBean();
-    }
-
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(MainApplicationClass.class);

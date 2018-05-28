@@ -1,10 +1,7 @@
 package me.runningapp.service;
 
 import me.runningapp.model.Training;
-import me.runningapp.model.User;
-import me.runningapp.repository.TrainingRepository;
-import me.runningapp.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import me.runningapp.model.authority.User;
 
 import java.util.List;
 
