@@ -7,17 +7,18 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "role", uniqueConstraints = { @UniqueConstraint(columnNames = { "name" }) })
 @EqualsAndHashCode(of = "id")
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
 
+    @ManyToMany(targetEntity=User.class, mappedBy = "roles")
     private Set<User> users;
 
     @Override
@@ -39,7 +40,7 @@ public class Role implements GrantedAuthority {
         this.name = name;
     }
 
-    @ManyToMany(mappedBy = "roles")
+
     public Set<User> getUsers() {
         return users;
     }

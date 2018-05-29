@@ -3,11 +3,12 @@ package me.runningapp.model;
 import me.runningapp.model.authority.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "training")
-public class Training {
+public class Training implements Serializable {
     private Long id;
     private Date start;
     private double distance;

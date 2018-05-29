@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_name" }) })
 public class User implements UserDetails, Serializable {
 
     @Id
@@ -39,7 +39,13 @@ public class User implements UserDetails, Serializable {
     @Column(name = "ENABLED")
     private boolean enabled;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Training> trainings;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @OrderBy
+    @JsonIgnore
     private Set<Role> roles;
 
     public Long getId() {
@@ -68,7 +74,7 @@ public class User implements UserDetails, Serializable {
         this.password = password;
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+
     public Set<Training> getTrainings() {
         return trainings;
     }
@@ -77,10 +83,7 @@ public class User implements UserDetails, Serializable {
         this.trainings = trainings;
     }
 
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @OrderBy
-    @JsonIgnore
+
     public Set<Role> getRoles() {
         return roles;
     }

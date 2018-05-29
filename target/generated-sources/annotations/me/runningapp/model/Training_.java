@@ -12,5 +12,8 @@ public abstract class Training_ {
 	public static volatile SingularAttribute<Training, Long> id;
 	public static volatile SingularAttribute<Training, User> user;
 
+	public static final String ID = "id";
+	public static final String USER = "user";
+
 }
 
