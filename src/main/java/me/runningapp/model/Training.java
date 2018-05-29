@@ -1,5 +1,7 @@
 package me.runningapp.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.runningapp.model.authority.User;
 
 import javax.persistence.*;
@@ -8,29 +10,22 @@ import java.util.Date;
 
 @Entity
 @Table(name = "training")
+@Getter @Setter
 public class Training implements Serializable {
-    private Long id;
-    private Date start;
-    private double distance;
-    private User user;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "id")
+    private Long id;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "start")
+    private Date start;
+
+    @Column(name = "distance")
+    private Double distance;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    public User getUser() {
-        return user;
-    }
+    private User user;
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

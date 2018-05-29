@@ -26,7 +26,7 @@
         <hibernate.version>5.3.1.Final</hibernate.version>
         <flywaydb.version>5.0.5</flywaydb.version>
         <jackson.version>2.9.4</jackson.version>
-        <lombok.version>1.16.20</lombok.version>
+        <lombok.version>1.16.22</lombok.version>
         <oauth2.version>2.2.1.RELEASE</oauth2.version>
     </properties>
 
@@ -49,11 +49,19 @@
             <artifactId>spring-context-support</artifactId>
             <version>${spring.version}</version>
         </dependency>
-<!--        <dependency>
-            <groupId>org.springframework.hateoas</groupId>
-            <artifactId>spring-hateoas</artifactId>
-            <version>${spring.hateoas.version}</version>
-        </dependency>-->
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--        <dependency>
+                    <groupId>org.springframework.hateoas</groupId>
+                    <artifactId>spring-hateoas</artifactId>
+                    <version>${spring.hateoas.version}</version>
+                </dependency>-->
 
         <dependency>
             <groupId>com.h2database</groupId>
