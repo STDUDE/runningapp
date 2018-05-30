@@ -18,8 +18,8 @@ import static lombok.AccessLevel.PRIVATE;
 
 @RestController
 @RequestMapping("/public/user")
-@FieldDefaults(level = PRIVATE, makeFinal = true)
-@AllArgsConstructor(access = PACKAGE)
+/*@FieldDefaults(level = PRIVATE, makeFinal = true)
+@AllArgsConstructor(access = PACKAGE)*/
 final class PublicUserController {
   /*  @NonNull
     UserAuthenticationService authentication;
