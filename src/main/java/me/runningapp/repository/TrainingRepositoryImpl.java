@@ -1,6 +1,7 @@
 package me.runningapp.repository;
 
 import me.runningapp.model.Training;
+import me.runningapp.model.Training_;
 import me.runningapp.model.authority.User;
 import org.springframework.stereotype.Repository;
 
@@ -25,15 +26,19 @@ public class TrainingRepositoryImpl implements TrainingRepository {
         query.select(root).distinct(true);
         TypedQuery<Training> allQuery = entityManager.createQuery(query);
 
-//        return entityManager.createQuery("from Training").getResultList();
         return allQuery.getResultList();
     }
 
     @SuppressWarnings("unchecked")
     public List<Training> getAllByUser(User user) {
-//        Criteria criteria = entityManager.getCriteriaBuilder().equal(Restrictions.eq("user_id", user.getId()));
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Training> query = builder.createQuery(Training.class);
 
-        return null;
+        Root<Training> root = query.from(Training.class);
+        Predicate idPredicate = builder.equal(root.get(Training_.USER), user);
+        query.where(builder.and(idPredicate));
+
+        return entityManager.createQuery(query).getResultList();
     }
 
     @SuppressWarnings("unchecked")

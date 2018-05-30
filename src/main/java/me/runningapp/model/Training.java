@@ -1,5 +1,6 @@
 package me.runningapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import me.runningapp.model.authority.User;
@@ -26,6 +27,7 @@ public class Training implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
 }

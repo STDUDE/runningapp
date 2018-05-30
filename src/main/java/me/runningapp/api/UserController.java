@@ -1,42 +1,70 @@
 package me.runningapp.api;
 
 
+import me.runningapp.MainApplicationClass;
 import me.runningapp.model.Training;
 import me.runningapp.model.authority.User;
+import me.runningapp.service.SecurityService;
 import me.runningapp.service.TrainingService;
+import me.runningapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/api/me")
+@RequestMapping("/api/user/me")
 public class UserController {
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    UserDetailsService userDetailsService;
 
     @Autowired
     private TrainingService trainingService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public @ResponseBody
-    User me(@RequestHeader OAuth2Authentication auth) {
-        return (User) auth.getUserAuthentication().getPrincipal();
+    public Principal me(Principal principal) {
+        return principal;
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+/*    @RequestMapping(value = "/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    List<Training> getAll() {
-        return trainingService.getAll();
+    UserDetails details(Principal principal) {
+        return userDetailsService.loadUserByUsername(principal.getName());
+    }*/
+
+    @RequestMapping(value = "/data", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public @ResponseBody
+    User data(Principal principal) {
+        return userService.findByUsername(principal.getName());
+    }
+
+    @RequestMapping(value = "/trainings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public @ResponseBody
+    List<Training> getAll(Principal principal) {
+        return trainingService.getAllByUser(userService.findByUsername(principal.getName()));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

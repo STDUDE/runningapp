@@ -2,7 +2,7 @@ package me.runningapp.api;
 
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import me.runningapp.service.UserAuthenticationService;
+//import me.runningapp.service.UserAuthenticationService;
 import me.runningapp.service.UserRegistrationService;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +21,7 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
 final class PublicUserController {
-    @NonNull
+  /*  @NonNull
     UserAuthenticationService authentication;
 
     @NonNull
@@ -44,5 +44,5 @@ final class PublicUserController {
         return authentication
                 .login(username, password)
                 .orElseThrow(() -> new RuntimeException("invalid login and/or password"));
-    }
+    }*/
 }

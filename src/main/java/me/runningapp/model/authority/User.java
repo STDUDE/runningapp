@@ -1,6 +1,7 @@
 package me.runningapp.model.authority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import me.runningapp.model.Training;
@@ -23,6 +24,7 @@ public class User implements UserDetails, Serializable {
     @Column(name = "user_name")
     private String username;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
@@ -35,14 +37,15 @@ public class User implements UserDetails, Serializable {
     @Column(name = "credentials_expired")
     private boolean credentialsExpired;
 
-    @Column(name = "ENABLED")
+    @Column(name = "enabled")
     private boolean enabled;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<Training> trainings;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     @OrderBy
     @JsonIgnore
     private Set<Role> roles;
