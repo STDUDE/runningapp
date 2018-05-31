@@ -36,4 +36,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(userPasswordEncoder);
     }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+    }
+
+
 }

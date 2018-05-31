@@ -42,6 +42,28 @@ public class UserServiceImpl implements UserService {
         newUser.setUsername(userDto.getUsername());
         newUser.setPassword(userPasswordEncoder.encode(userDto.getPassword()));
         newUser.setRoles(Sets.newHashSet(roleRepository.findAll()));
+
+/*
+        // Create principal and auth token
+        User userPrincipal = new User(user.getUserID(), "", true, true, true, true, authorities);
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal, null, authorities) ;
+
+        OAuth2Authentication authenticationRequest = new OAuth2Authentication(authorizationRequest, authenticationToken);
+        authenticationRequest.setAuthenticated(true);
+
+        CustomTokenStore tokenStore = new CustomTokenStore();
+
+        // Token Enhancer
+        CustomTokenEnhancer tokenEnhancer = new CustomTokenEnhancer(user.getUserID());
+
+        CustomTokenServices tokenServices = new CustomTokenServices();
+        tokenServices.setTokenEnhancer(tokenEnhancer);
+        tokenServices.setSupportRefreshToken(true);
+        tokenServices.setTokenStore(tokenStore);
+
+        OAuth2AccessToken accessToken = tokenServices.createAccessTokenForUser(authenticationRequest, user);*/
+
         return userRepository.save(newUser);
     }
 

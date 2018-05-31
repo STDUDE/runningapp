@@ -1,4 +1,4 @@
-package me.runningapp.utils;
+package me.runningapp.utils.server;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
