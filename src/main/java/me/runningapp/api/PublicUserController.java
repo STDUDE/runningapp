@@ -1,48 +1,51 @@
 package me.runningapp.api;
 
-import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
-//import me.runningapp.service.UserAuthenticationService;
-import me.runningapp.service.UserRegistrationService;
-import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
+import me.runningapp.api.dto.PasswordDto;
+import me.runningapp.api.dto.UserDto;
+import me.runningapp.model.authority.User;
+import me.runningapp.service.UserService;
+import me.runningapp.utils.GenericResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
-import static java.util.Optional.ofNullable;
-import static lombok.AccessLevel.PACKAGE;
-import static lombok.AccessLevel.PRIVATE;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/public/user")
-/*@FieldDefaults(level = PRIVATE, makeFinal = true)
-@AllArgsConstructor(access = PACKAGE)*/
 final class PublicUserController {
-  /*  @NonNull
-    UserAuthenticationService authentication;
 
-    @NonNull
-    UserRegistrationService registration;
+    @Autowired
+    UserService userService;
 
-    @PostMapping("/api/register")
-    String register(
-            final HttpServletRequest request,
-            @RequestParam("username") final String username,
-            @RequestParam(value = "password", required = false) final String password) {
-        registration.register(username, ofNullable(password).equals("") ? null : ofNullable(password) );
-        return authentication.login(username, password).orElseThrow(RuntimeException::new);
+
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @ResponseBody
+    public GenericResponse registerUserAccount(
+            @Valid UserDto userDto, HttpServletRequest request) {
+//        LOGGER.debug("Registering user account with information: {}", accountDto);
+
+        final User registered = userService.register(userDto);
+//        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
+
+        return new GenericResponse("success");
+
     }
 
-    @PostMapping("/api/auth")
-    String login(
-            final HttpServletRequest request,
-            @RequestParam("username") final String username,
-            @RequestParam("password") final String password) {
-        return authentication
-                .login(username, password)
-                .orElseThrow(() -> new RuntimeException("invalid login and/or password"));
-    }*/
+    // change user password
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    @ResponseBody
+    public GenericResponse changeUserPassword(final Locale locale, @Valid PasswordDto passwordDto) {
+        final User user = userService.findByUsername(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        if (!userService.checkIfValidOldPassword(user, passwordDto.getOldPassword())) {
+//            throw new InvalidOldPasswordException();
+        }
+        userService.changeUserPassword(user, passwordDto.getNewPassword());
+        return new GenericResponse("Password updated successfully");
+    }
+
 }
