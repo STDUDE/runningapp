@@ -21,8 +21,8 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Transactional
-    public List<Training> getAllByUser(User user) {
-        return trainingRepository.getAllByUser(user);
+    public List<Training> getAll(User user) {
+        return trainingRepository.getAll(user);
     }
 
     @Transactional
@@ -30,18 +30,23 @@ public class TrainingServiceImpl implements TrainingService {
         return trainingRepository.get(id);
     }
 
-    @Override
+    @Transactional
+    public Training get(long id, User user) {
+        return trainingRepository.get(id, user);
+    }
+
+    @Transactional
     public void save(Training training) {
         trainingRepository.save(training);
     }
 
-    @Override
+    @Transactional
     public void update(Training training) {
         trainingRepository.update(training);
     }
 
-    @Override
-    public void delete(Long id) {
+    @Transactional
+    public void delete(long id) {
         trainingRepository.delete(id);
     }
 

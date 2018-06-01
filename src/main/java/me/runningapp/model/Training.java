@@ -1,6 +1,8 @@
 package me.runningapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import me.runningapp.model.authority.User;
@@ -15,6 +17,8 @@ import java.util.Date;
 public class Training implements Serializable {
 
     @Id
+//    @ApiModelProperty(readOnly = true)
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
@@ -27,7 +31,6 @@ public class Training implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
     private User user;
 
 }

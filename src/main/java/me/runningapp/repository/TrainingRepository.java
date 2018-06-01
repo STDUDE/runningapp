@@ -7,12 +7,16 @@ import java.util.List;
 
 public interface TrainingRepository {
     List<Training> getAll();
-    List<Training> getAllByUser(User user);
+    List<Training> getAll(User user);
 
     Training get(long id);
+    Training get(long id, User user);
+
     void save(Training training);
     void update(Training training);
-    void delete(Long id);
+    void delete(long id);
     void delete(Training training);
+
+
 }
 

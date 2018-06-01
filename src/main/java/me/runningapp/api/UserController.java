@@ -1,24 +1,18 @@
 package me.runningapp.api;
 
 
-import me.runningapp.MainApplicationClass;
 import me.runningapp.model.Training;
 import me.runningapp.model.authority.User;
-import me.runningapp.service.SecurityService;
 import me.runningapp.service.TrainingService;
 import me.runningapp.service.UserService;
+import me.runningapp.utils.dto.Dto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
@@ -50,8 +44,9 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public Principal me(Principal principal) {
-        return principal;
+    @ResponseBody
+    public User me(Principal principal) {
+        return userService.findByUsername(principal.getName());
     }
 
 /*    @RequestMapping(value = "/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,6 +58,7 @@ public class UserController {
 
 
     @RequestMapping(value = "/extra", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public Map<String, Object> getExtraInfo(OAuth2Authentication auth) {
         final OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) auth.getDetails();
@@ -82,7 +78,26 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     List<Training> getAll(Principal principal) {
-        return trainingService.getAllByUser(userService.findByUsername(principal.getName()));
+        return trainingService.getAll(userService.findByUsername(principal.getName()));
+    }
+
+/*
+    @RequestMapping(value = "/trainings/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> create(Training training) {
+        trainingService.save(training);
+        HttpHeaders headers = new HttpHeaders();
+        ControllerLinkBuilder linkBuilder = linkTo(methodOn(UserController.class).get(training.getId()));
+        headers.setLocation(linkBuilder.toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+*/
+
+    @RequestMapping(value = "/trainings/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public @ResponseBody
+    Training get(@PathVariable Long id, Principal principal) {
+//        бред написала
+        return trainingService.get(id, userService.findByUsername(principal.getName()));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -92,21 +107,11 @@ public class UserController {
         return trainingService.get(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.OK)
-    public ResponseEntity<?> create(@RequestBody Training training) {
-        trainingService.save(training);
-        HttpHeaders headers = new HttpHeaders();
-        ControllerLinkBuilder linkBuilder = linkTo(methodOn(UserController.class).get(training.getId()));
-        headers.setLocation(linkBuilder.toUri());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
-    }
-
     @RequestMapping(value = "/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    List<Training> get(@RequestBody User user) {
-        return trainingService.getAllByUser(user);
+    List<Training> get(@RequestParam User user) {
+        return trainingService.getAll(user);
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)

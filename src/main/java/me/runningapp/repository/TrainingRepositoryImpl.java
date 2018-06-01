@@ -3,6 +3,7 @@ package me.runningapp.repository;
 import me.runningapp.model.Training;
 import me.runningapp.model.Training_;
 import me.runningapp.model.authority.User;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -30,7 +31,7 @@ public class TrainingRepositoryImpl implements TrainingRepository {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Training> getAllByUser(User user) {
+    public List<Training> getAll(User user) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Training> query = builder.createQuery(Training.class);
 
@@ -42,14 +43,28 @@ public class TrainingRepositoryImpl implements TrainingRepository {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Training> getAllByUser(Long id) {
+    public Training get(long id) {
+//        return (Training) entityManager.createQuery("from Training where id=" + id).getSingleResult();
 
-        return null;
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Training> query = builder.createQuery(Training.class);
+
+        Root<Training> root = query.from(Training.class);
+        Predicate idPredicate = builder.equal(root.get(Training_.id), id);
+        query.where(builder.and(idPredicate));
+        return DataAccessUtils.singleResult(entityManager.createQuery(query).getResultList());
     }
 
-    @Override
-    public Training get(long id) {
-        return (Training) entityManager.createQuery("from Training where id=" + id).getSingleResult();
+    @SuppressWarnings("unchecked")
+    public Training get(long id, User user) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Training> query = builder.createQuery(Training.class);
+
+        Root<Training> root = query.from(Training.class);
+        Predicate idPredicate = builder.equal(root.get(Training_.id), id);
+        Predicate userPredicate = builder.equal(root.get(Training_.user), user);
+        query.where(builder.and(idPredicate, userPredicate));
+        return DataAccessUtils.singleResult(entityManager.createQuery(query).getResultList());
     }
 
     @Override
@@ -63,7 +78,7 @@ public class TrainingRepositoryImpl implements TrainingRepository {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(long id) {
         Training training = entityManager.find(Training.class, id);
         delete(training);
     }
