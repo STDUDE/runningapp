@@ -62,7 +62,6 @@ public class UserController {
     }*/
 
 
-    @PreAuthorize("#oauth2.hasScope('read')")
     @RequestMapping(value = "/extra", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map<String, Object> getExtraInfo(OAuth2Authentication auth) {

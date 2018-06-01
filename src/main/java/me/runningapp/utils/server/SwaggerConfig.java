@@ -1,5 +1,6 @@
 package me.runningapp.utils.server;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +27,8 @@ public class SwaggerConfig {
 
     private static final Object CLIENT_SECRET = "";
     private static final Object CLIENT_ID = "";
+    @Value("${server.port}")
+    private String port;
 
     @Bean
     public Docket api() {
@@ -55,7 +58,7 @@ public class SwaggerConfig {
         authorizationScopeList.add(new AuthorizationScope("write", "access all"));
 
         List<GrantType> grantTypes = newArrayList();
-        GrantType passwordCredentialsGrant = new ResourceOwnerPasswordCredentialsGrant("http://localhost:8080/api/oauth/token");
+        GrantType passwordCredentialsGrant = new ResourceOwnerPasswordCredentialsGrant("http://localhost:"+ port +"/api/v1/token");
         grantTypes.add(passwordCredentialsGrant);
 
         return new OAuth("oauth2", authorizationScopeList, grantTypes);
@@ -79,7 +82,7 @@ public class SwaggerConfig {
     @Bean
     public SecurityConfiguration security() {
         return new SecurityConfiguration
-                ("", "", "", "", "Bearer access token", ApiKeyVehicle.HEADER, HttpHeaders.AUTHORIZATION,"");
+                ("read-write-client", "read-write-client-password1234", "", "", "Bearer access token", ApiKeyVehicle.HEADER, HttpHeaders.AUTHORIZATION,"");
     }
 
     private ApiInfo apiInfo() {

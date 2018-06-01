@@ -9,19 +9,16 @@ import me.runningapp.service.SecurityService;
 import me.runningapp.service.UserService;
 import me.runningapp.utils.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.web.bind.annotation.*;
-import springfox.documentation.service.AuthorizationScope;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import java.util.List;
 import java.util.Locale;
-
-import static org.hibernate.validator.internal.util.CollectionHelper.newArrayList;
 
 @RestController
 @RequestMapping("/public/user")
@@ -32,7 +29,6 @@ final class PublicUserController {
 
     @Autowired
     SecurityService securityService;
-
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     @ResponseBody
