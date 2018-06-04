@@ -1,4 +1,3 @@
-/*
 package me.runningapp.utils.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,4 +28,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
         ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().applicationContext(this.applicationContext).build();
         argumentResolvers.add(new DtoModelMapper(objectMapper, entityManager));
     }
-}*/
+}

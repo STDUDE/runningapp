@@ -17,8 +17,6 @@ import java.util.Date;
 public class Training implements Serializable {
 
     @Id
-//    @ApiModelProperty(readOnly = true)
-//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
@@ -29,8 +27,15 @@ public class Training implements Serializable {
     @Column(name = "distance")
     private Double distance;
 
+/*
+    @JsonIgnore
+    @Column(name = "user_id")
+    private Long userId;
+*/
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
 }

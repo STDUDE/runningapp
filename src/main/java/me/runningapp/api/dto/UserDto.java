@@ -22,13 +22,10 @@ public class UserDto {
     @Size(min = 1)
     private String confirmPassword;
 
-    private Integer role;
-
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("UserDto [username=").append(username).append(", password=").append(password).append(", confirmPassword=").append(confirmPassword)
-                .append(", role=").append(role).append("]");
+        builder.append("UserDto [username=").append(username).append(", password=").append(password).append(", confirmPassword=").append(confirmPassword).append("]");
         return builder.toString();
     }
 

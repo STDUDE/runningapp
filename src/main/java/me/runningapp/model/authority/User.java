@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import me.runningapp.model.Training;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -44,11 +45,19 @@ public class User implements UserDetails, Serializable {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<Training> trainings;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     @OrderBy
     @JsonIgnore
     private Set<Role> roles;
+/*
+
+    public User(String username, String password, Set<GrantedAuthority> grantedAuthorities) {
+        this.username = username;
+        this.password = password;
+        this.roles = grantedAuthorities;
+    }
+*/
 
     @Override
     public boolean isAccountNonExpired() {

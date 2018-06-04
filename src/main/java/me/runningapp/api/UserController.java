@@ -1,10 +1,12 @@
 package me.runningapp.api;
 
 
+import me.runningapp.api.dto.TrainingDto;
 import me.runningapp.model.Training;
 import me.runningapp.model.authority.User;
 import me.runningapp.service.TrainingService;
 import me.runningapp.service.UserService;
+import me.runningapp.utils.GenericResponse;
 import me.runningapp.utils.dto.Dto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
@@ -16,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,20 +45,15 @@ public class UserController {
     @Autowired
     private TrainingService trainingService;
 
+/*    @Autowired
+    private AuthorizationServerTokenServices tokenServices;*/
+
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public User me(Principal principal) {
         return userService.findByUsername(principal.getName());
     }
-
-/*    @RequestMapping(value = "/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.OK)
-    public @ResponseBody
-    UserDetails details(Principal principal) {
-        return userDetailsService.loadUserByUsername(principal.getName());
-    }*/
-
 
     @RequestMapping(value = "/extra", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
@@ -81,30 +79,44 @@ public class UserController {
         return trainingService.getAll(userService.findByUsername(principal.getName()));
     }
 
-/*
-    @RequestMapping(value = "/trainings/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> create(Training training) {
-        trainingService.save(training);
-        HttpHeaders headers = new HttpHeaders();
-        ControllerLinkBuilder linkBuilder = linkTo(methodOn(UserController.class).get(training.getId()));
-        headers.setLocation(linkBuilder.toUri());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
-    }
-*/
-
-    @RequestMapping(value = "/trainings/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/trainings/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    Training get(@PathVariable Long id, Principal principal) {
-//        бред написала
-        return trainingService.get(id, userService.findByUsername(principal.getName()));
+    List<Training> getAll() {
+        return trainingService.getAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    /* trainings */
+
+    @RequestMapping(value = "trainings/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     Training get(@PathVariable Long id) {
         return trainingService.get(id);
+    }
+
+    @RequestMapping(value = "/trainings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<?> create(@RequestBody @Dto(TrainingDto.class) Training training, Principal principal) {
+        training.setUser(userService.findByUsername(principal.getName()));
+        trainingService.save(training);
+        HttpHeaders headers = new HttpHeaders();
+        ControllerLinkBuilder linkBuilder = linkTo(methodOn(UserController.class, "trainings").get(training.getId()));
+        headers.setLocation(linkBuilder.toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/trainings", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void update(@RequestBody @Dto(TrainingDto.class) Training training, Principal principal) {
+        training.setUser(userService.findByUsername(principal.getName()));
+        trainingService.update(training);
+    }
+
+    @RequestMapping(value = "/trainings/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void delete(@PathVariable Long id) {
+        trainingService.delete(id);
     }
 
     @RequestMapping(value = "/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -114,15 +126,4 @@ public class UserController {
         return trainingService.getAll(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.OK)
-    public void update(@RequestBody Training training) {
-        trainingService.update(training);
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.OK)
-    public void delete(@PathVariable Long id) {
-        trainingService.delete(id);
-    }
 }
