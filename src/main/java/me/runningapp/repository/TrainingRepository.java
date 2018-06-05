@@ -16,7 +16,8 @@ public interface TrainingRepository {
     void update(Training training);
     void delete(long id);
     void delete(Training training);
+    List<Training> getByDates();
 
-
+    List<Training> report();
 }
 

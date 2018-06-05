@@ -22,6 +22,9 @@ public class User implements UserDetails, Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "avatar")
+    private String avatar;
+
     @Column(name = "user_name")
     private String username;
 
@@ -50,14 +53,6 @@ public class User implements UserDetails, Serializable {
     @OrderBy
     @JsonIgnore
     private Set<Role> roles;
-/*
-
-    public User(String username, String password, Set<GrantedAuthority> grantedAuthorities) {
-        this.username = username;
-        this.password = password;
-        this.roles = grantedAuthorities;
-    }
-*/
 
     @Override
     public boolean isAccountNonExpired() {

@@ -50,5 +50,10 @@ public class TrainingServiceImpl implements TrainingService {
         trainingRepository.delete(id);
     }
 
+    @Transactional
+    public List<Training> report() {
+        return trainingRepository.report();
+    }
+
 
 }

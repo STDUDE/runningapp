@@ -6,7 +6,6 @@ import me.runningapp.model.Training;
 import me.runningapp.model.authority.User;
 import me.runningapp.service.TrainingService;
 import me.runningapp.service.UserService;
-import me.runningapp.utils.GenericResponse;
 import me.runningapp.utils.dto.Dto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
@@ -18,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,9 +42,6 @@ public class UserController {
 
     @Autowired
     private TrainingService trainingService;
-
-/*    @Autowired
-    private AuthorizationServerTokenServices tokenServices;*/
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
@@ -126,4 +121,10 @@ public class UserController {
         return trainingService.getAll(user);
     }
 
+    @RequestMapping(value = "/trainings/report", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public @ResponseBody
+    List<Training> get(Principal principal) {
+        return trainingService.report();
+    }
 }

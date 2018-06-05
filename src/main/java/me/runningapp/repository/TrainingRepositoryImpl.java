@@ -88,4 +88,10 @@ public class TrainingRepositoryImpl implements TrainingRepository {
         entityManager.remove(training);
     }
 
+    @Override
+    public List<Training> report() {
+        return null;
+    }
+
+
 }

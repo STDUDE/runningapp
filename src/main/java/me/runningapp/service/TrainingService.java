@@ -13,4 +13,5 @@ public interface TrainingService {
     void save(Training training);
     void update(Training training);
     void delete(long id);
+    List<Training> report();
 }

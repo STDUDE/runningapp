@@ -24,14 +24,11 @@ public class Training implements Serializable {
     @Column(name = "start")
     private Date start;
 
+    @Column(name = "time")
+    private Long time;
+
     @Column(name = "distance")
     private Double distance;
-
-/*
-    @JsonIgnore
-    @Column(name = "user_id")
-    private Long userId;
-*/
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
