@@ -1,5 +1,6 @@
 package me.runningapp.service;
 
+import me.runningapp.api.dto.ReportDto;
 import me.runningapp.model.Training;
 import me.runningapp.model.authority.User;
 import me.runningapp.repository.TrainingRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -51,8 +53,8 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Transactional
-    public List<Training> report() {
-        return trainingRepository.report();
+    public ReportDto report(Date date1, Date date2, User user) {
+        return trainingRepository.report(date1, date2, user);
     }
 
 

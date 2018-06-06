@@ -1,5 +1,6 @@
 package me.runningapp.repository;
 
+import me.runningapp.api.dto.ReportDto;
 import me.runningapp.model.Training;
 import me.runningapp.model.Training_;
 import me.runningapp.model.authority.User;
@@ -10,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -44,8 +46,6 @@ public class TrainingRepositoryImpl implements TrainingRepository {
 
     @SuppressWarnings("unchecked")
     public Training get(long id) {
-//        return (Training) entityManager.createQuery("from Training where id=" + id).getSingleResult();
-
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Training> query = builder.createQuery(Training.class);
 
@@ -89,8 +89,27 @@ public class TrainingRepositoryImpl implements TrainingRepository {
     }
 
     @Override
-    public List<Training> report() {
-        return null;
+    public ReportDto report(Date date1, Date date2, User user) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
+
+        Root<Training> root = query.from(Training.class);
+        Predicate userPredicate = builder.equal(root.get(Training_.user), user);
+        Predicate datesPredicate = builder.between(root.get(Training_.start), date1, date2);
+
+        Expression<Double> sumDistance = builder.sum(root.get("distance")).as(Double.class); /*метры*/
+        Expression<Double> sumTime = builder.sum(root.get("time")).as(Double.class); /*милисекунды*/
+        Expression<Double> sumTimeSec = builder.quot(sumTime, 1000).as(Double.class); /*секунды*/
+        Expression<Double> avgSpeed = builder.quot(sumDistance, sumTimeSec).as(Double.class); /*метры/c*/
+        Expression<Double> avgTimeSec = builder.quot(builder.avg(root.get("time")), 1000).as(Double.class); /*секунды*/
+        query.multiselect(sumDistance, avgSpeed, avgTimeSec);
+        query.where(builder.and(userPredicate, datesPredicate));
+//        GROUP BY strftime('%W', thedate)
+        query.groupBy();
+
+        Object[] objects = DataAccessUtils.singleResult(entityManager.createQuery(query).getResultList());
+
+        return new ReportDto((Double) objects[0], (Double) objects[1], (Double) objects[2]);
     }
 
 

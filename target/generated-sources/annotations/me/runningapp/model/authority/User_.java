@@ -16,6 +16,7 @@ public abstract class User_ {
 	public static volatile SetAttribute<User, Training> trainings;
 	public static volatile SingularAttribute<User, Boolean> accountExpired;
 	public static volatile SingularAttribute<User, Long> id;
+	public static volatile SingularAttribute<User, String> avatar;
 	public static volatile SingularAttribute<User, Boolean> credentialsExpired;
 	public static volatile SingularAttribute<User, Boolean> enabled;
 	public static volatile SingularAttribute<User, String> username;
@@ -26,6 +27,7 @@ public abstract class User_ {
 	public static final String TRAININGS = "trainings";
 	public static final String ACCOUNT_EXPIRED = "accountExpired";
 	public static final String ID = "id";
+	public static final String AVATAR = "avatar";
 	public static final String CREDENTIALS_EXPIRED = "credentialsExpired";
 	public static final String ENABLED = "enabled";
 	public static final String USERNAME = "username";

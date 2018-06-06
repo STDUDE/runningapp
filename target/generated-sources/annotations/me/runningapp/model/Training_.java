@@ -13,11 +13,13 @@ public abstract class Training_ {
 	public static volatile SingularAttribute<Training, Double> distance;
 	public static volatile SingularAttribute<Training, Date> start;
 	public static volatile SingularAttribute<Training, Long> id;
+	public static volatile SingularAttribute<Training, Long> time;
 	public static volatile SingularAttribute<Training, User> user;
 
 	public static final String DISTANCE = "distance";
 	public static final String START = "start";
 	public static final String ID = "id";
+	public static final String TIME = "time";
 	public static final String USER = "user";
 
 }
