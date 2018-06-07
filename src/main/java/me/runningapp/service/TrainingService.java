@@ -4,8 +4,8 @@ import me.runningapp.api.dto.ReportDto;
 import me.runningapp.model.Training;
 import me.runningapp.model.authority.User;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface TrainingService {
     List<Training> getAll();
@@ -15,5 +15,5 @@ public interface TrainingService {
     void save(Training training);
     void update(Training training);
     void delete(long id);
-    ReportDto report(Date date1, Date date2, User user);
+    Map<String, ReportDto> report(Integer year, User user);
 }

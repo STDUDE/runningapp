@@ -4,8 +4,8 @@ import me.runningapp.api.dto.ReportDto;
 import me.runningapp.model.Training;
 import me.runningapp.model.authority.User;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface TrainingRepository {
     List<Training> getAll();
@@ -18,6 +18,6 @@ public interface TrainingRepository {
     void update(Training training);
     void delete(long id);
     void delete(Training training);
-    ReportDto report(Date date1, Date date2, User user);
+    Map<String, ReportDto> report(Integer year, User user);
 }
 

@@ -22,8 +22,6 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -127,11 +125,7 @@ public class UserController {
     @RequestMapping(value = "/trainings/report", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    ReportDto get(Principal principal) {
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, -15);
-        Date d = c.getTime();
-
-        return trainingService.report(d, new Date(), userService.findByUsername(principal.getName()));
+    Map<String, ReportDto> get(@RequestParam Integer year, Principal principal) {
+        return trainingService.report(year, userService.findByUsername(principal.getName()));
     }
 }

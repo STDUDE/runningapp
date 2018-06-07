@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TrainingServiceImpl implements TrainingService {
@@ -53,8 +53,8 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Transactional
-    public ReportDto report(Date date1, Date date2, User user) {
-        return trainingRepository.report(date1, date2, user);
+    public Map<String, ReportDto> report(Integer year, User user) {
+        return trainingRepository.report(year, user);
     }
 
 
