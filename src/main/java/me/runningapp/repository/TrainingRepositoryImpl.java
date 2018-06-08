@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Repository
@@ -120,9 +121,17 @@ public class TrainingRepositoryImpl implements TrainingRepository {
 
     private Map<String, ReportDto> initReport(Integer numberOfWeeks) {
         Map<String, ReportDto> report = new TreeMap<>(Comparator.comparing(o -> Integer.valueOf(o.split(" ")[1])));
-
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         for (int i = 1; i <= numberOfWeeks; i++) {
-            report.put("week " + i, new ReportDto((double) 0, (double) 0, (double) 0));
+
+            c1.set(Calendar.WEEK_OF_YEAR, i);
+            c2.set(Calendar.WEEK_OF_YEAR, i);
+            c1.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            c2.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+
+            report.put("week " + i + " (" + sdf.format(c1.getTime()) + "/" + sdf.format(c2.getTime()) + ")", new ReportDto((double) 0, (double) 0, (double) 0));
         }
         return report;
     }
